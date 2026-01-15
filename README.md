@@ -7,3 +7,4 @@ python -m venv venv
 ```python
 pip install -r requirements.txt
 ```
+For the .env you may make your own
