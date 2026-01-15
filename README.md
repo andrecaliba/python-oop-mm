@@ -1,0 +1,1 @@
+# This is the task management application using python OOP and MySQL
