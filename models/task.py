@@ -12,14 +12,14 @@ class Task():
     """
     Task model class representing a task in the task management system.
     
-    Attributes:
-        id (str): Unique identifier (UUID) for the task
-        title (str): Task title/name
-        description (str): Detailed description of the task
-        due_date (str): Due date in YYYY-MM-DD format
-        priority (str): Priority level (Low, Medium, High)
-        status (str): Current status (Pending, In Progress, Completed)
-        created_at (str): Timestamp when the task was created
+    Private Attributes (accessed via properties):
+        __id (str): Unique identifier (UUID) for the task
+        __title (str): Task title/name
+        __description (str): Detailed description of the task
+        __due_date (str): Due date in YYYY-MM-DD format
+        __priority (str): Priority level (Low, Medium, High)
+        __status (str): Current status (Pending, In Progress, Completed)
+        __created_at (str): Timestamp when the task was created
     """
     def __init__(self, id, title, description, due_date, priority, status, created_at):
         """
@@ -33,13 +33,89 @@ class Task():
         :param status: Current status (Pending, In Progress, Completed)
         :param created_at: Timestamp when the task was created
         """
-        self.id = id
-        self.title = title
-        self.description = description
-        self.due_date = due_date
-        self.priority = priority
-        self.status = status
-        self.created_at = created_at
+        self.__id = id
+        self.__title = title
+        self.__description = description
+        self.__due_date = due_date
+        self.__priority = priority
+        self.__status = status
+        self.__created_at = created_at
+    
+    # ==================== Property Getters ====================
+    
+    @property
+    def id(self):
+        """Get the task ID."""
+        return self.__id
+    
+    @property
+    def title(self):
+        """Get the task title."""
+        return self.__title
+    
+    @property
+    def description(self):
+        """Get the task description."""
+        return self.__description
+    
+    @property
+    def due_date(self):
+        """Get the task due date."""
+        return self.__due_date
+    
+    @property
+    def priority(self):
+        """Get the task priority level."""
+        return self.__priority
+    
+    @property
+    def status(self):
+        """Get the task status."""
+        return self.__status
+    
+    @property
+    def created_at(self):
+        """Get the task creation timestamp."""
+        return self.__created_at
+    
+    # ==================== Property Setters ====================
+    
+    @title.setter
+    def title(self, value):
+        """Set the task title."""
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError("Title must be a non-empty string")
+        self.__title = value
+    
+    @description.setter
+    def description(self, value):
+        """Set the task description."""
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError("Description must be a non-empty string")
+        self.__description = value
+    
+    @due_date.setter
+    def due_date(self, value):
+        """Set the task due date."""
+        if not isinstance(value, str) or not value.strip():
+            raise ValueError("Due date must be a non-empty string")
+        self.__due_date = value
+    
+    @priority.setter
+    def priority(self, value):
+        """Set the task priority level."""
+        valid_priorities = ["Low", "Medium", "High"]
+        if value not in valid_priorities:
+            raise ValueError(f"Priority must be one of: {', '.join(valid_priorities)}")
+        self.__priority = value
+    
+    @status.setter
+    def status(self, value):
+        """Set the task status."""
+        valid_statuses = ["Pending", "In Progress", "Completed"]
+        if value not in valid_statuses:
+            raise ValueError(f"Status must be one of: {', '.join(valid_statuses)}")
+        self.__status = value
     
     @staticmethod
     def get(task_id):
@@ -216,10 +292,10 @@ class Task():
         :raises: Catches and logs any database errors
         """
         try:
-            # Update instance status
+            # Update instance status using the setter (which validates)
             self.status = status
             # Update database record
-            cursor.execute("UPDATE tasks SET status = %s WHERE id = %s", (status, self.id))
+            cursor.execute("UPDATE tasks SET status = %s WHERE id = %s", (status, self.__id))
             # Commit the transaction
             db.commit()
             return True
@@ -238,7 +314,7 @@ class Task():
         """
         try:
             # Delete the task record from the database
-            cursor.execute("DELETE FROM tasks WHERE id = %s", (self.id,))
+            cursor.execute("DELETE FROM tasks WHERE id = %s", (self.__id,))
             # Commit the transaction to apply the deletion
             db.commit()
             return True
@@ -254,9 +330,9 @@ class Task():
         
         :return: Formatted string representation of the task
         """
-        return (f"Task(id={self.id[:8]}..., title='{self.title}', "
-                f"status='{self.status}', priority='{self.priority}', "
-                f"due_date='{self.due_date}')")
+        return (f"Task(id={self.__id[:8]}..., title='{self.__title}', "
+                f"status='{self.__status}', priority='{self.__priority}', "
+                f"due_date='{self.__due_date}')")
     
     def __repr__(self):
         """
@@ -276,11 +352,11 @@ class Task():
         for each field, making it easy for users to review task information.
         """
         print("\n" + "="*60)
-        print(f"ID:          {self.id}")
-        print(f"Title:       {self.title}")
-        print(f"Description: {self.description}")
-        print(f"Due Date:    {self.due_date}")
-        print(f"Priority:    {self.priority}")
-        print(f"Status:      {self.status}")
-        print(f"Created At:  {self.created_at}")
+        print(f"ID:          {self.__id}")
+        print(f"Title:       {self.__title}")
+        print(f"Description: {self.__description}")
+        print(f"Due Date:    {self.__due_date}")
+        print(f"Priority:    {self.__priority}")
+        print(f"Status:      {self.__status}")
+        print(f"Created At:  {self.__created_at}")
         print("="*60)

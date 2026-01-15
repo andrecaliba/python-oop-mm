@@ -29,7 +29,18 @@ class TaskManager():
         No parameters are required as the TaskManager uses the global
         database connection established in db.py
         """
-        pass
+        # Private attribute to track if manager is initialized
+        self.__initialized = True
+    
+    # ==================== Property Getters ====================
+    
+    @property
+    def is_initialized(self):
+        """Check if the TaskManager is properly initialized."""
+        return self.__initialized
+    
+    # ==================== Public Methods ====================
+    
     def add_task(self):
         """Add a new task and return the Task object."""
         title = input("Enter the title: ")
@@ -265,6 +276,11 @@ class TaskManager():
             else:
                 print("Invalid input! Please enter 'yes' or 'no'.")
 
+
+# ==================== Private Utility Functions ====================
+# These functions are helper utilities for user input validation and formatting.
+# While not strictly private (Python doesn't enforce it), they are intended
+# for internal use by the TaskManager class.
 
 def enter_month():
     """
